@@ -9,7 +9,7 @@ import (
 	"errors"
 
 	"github.com/conformal/btcjson"
-	"github.com/conformal/btcwire"
+	"github.com/mably/btcwire"
 )
 
 // Help texts
