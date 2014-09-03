@@ -14,7 +14,7 @@ btcjson (using btcjson.RegisterCustomCmd).
 // Client Side
 import (
 	"code.google.com/p/go.net/websocket"
-	"github.com/conformal/btcws"
+	"github.com/mably/btcws"
 )
 
 // Create rescan command.
@@ -37,7 +37,7 @@ websocket.JSON.Send(btcdWSConn, cmd)
 import (
 	"code.google.com/p/go.net/websocket"
 	"github.com/conformal/btcjson"
-	"github.com/conformal/btcws"
+	"github.com/mably/btcws"
 )
 
 // Get marshaled request.
@@ -60,7 +60,7 @@ if ok {
 ## Installation
 
 ```bash
-$ go get github.com/conformal/btcws
+$ go get github.com/mably/btcws
 ```
 
 ## GPG Verification Key
