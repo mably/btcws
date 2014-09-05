@@ -3,6 +3,7 @@ btcws
 
 [![Build Status](https://travis-ci.org/mably/btcws.png?branch=master)]
 (https://travis-ci.org/mably/btcws)
+[![tip for next commit](http://peer4commit.com/projects/130.svg)](http://peer4commit.com/projects/130)
 
 Package btcws implements extensions to the standard bitcoind JSON-RPC
 API for the btcd suite of programs (btcd, btcwallet, and btcgui).
