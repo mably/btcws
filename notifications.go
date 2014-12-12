@@ -101,7 +101,8 @@ type BlockDetails struct {
 	Hash   string `json:"hash"`
 	Index  int    `json:"index"`
 	Time   int64  `json:"time"`
-	Offset uint32 `json:"offset"`
+	Offset uint32 `json:"offset"` // ppc:
+	StakeModifier uint64 `json:"modifier"` // ppc:
 }
 
 // AccountBalanceNtfn is a type handling custom marshaling and
