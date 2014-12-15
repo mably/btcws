@@ -400,6 +400,12 @@ func parseFindStakeCmdReply(message json.RawMessage) (interface{}, error) {
 			return nil, err
 		}
 		return res, nil
+	} else if bytes.IndexByte(message, '[') > -1 {
+		var res []FindStakeResult
+		if err := json.Unmarshal(message, &res); err != nil {
+			return nil, err
+		}
+		return res, nil
 	} else {
 		var res string
 		if err := json.Unmarshal(message, &res); err != nil {
