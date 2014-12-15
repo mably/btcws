@@ -52,6 +52,14 @@ func init() {
 		nil, `TODO(jrick) fillmein`)
 	btcjson.RegisterCustomCmd("walletislocked", parseWalletIsLockedCmd,
 		nil, `TODO(jrick) fillmein`)
+
+	btcjson.RegisterCustomCmd("getkernelstakemodifier", parseGetKernelStakeModifierCmd,
+		parseGetKernelStakeModifierCmdReply, `TODO(mably) fillmein`) // ppc:
+	btcjson.RegisterCustomCmd("getnextrequiredtarget", parseGetNextRequiredTargetCmd,
+		parseGetNextRequiredTargetCmdReply, `TODO(mably) fillmein`) // ppc:
+	btcjson.RegisterCustomCmd("findstake", parseFindStakeCmd,
+		parseFindStakeCmdReply, `TODO(mably) fillmein`) // ppc:
+
 }
 
 // AuthenticateCmd is a type handling custom marshaling and
