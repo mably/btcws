@@ -394,14 +394,14 @@ func parseFindStakeCmd(r *btcjson.RawCmd) (btcjson.Cmd, error) {
 // FindStakeCmd into a concrete type and returns it packed into
 // an interface.  This is used when registering the custom command with btcjson.
 func parseFindStakeCmdReply(message json.RawMessage) (interface{}, error) {
-	if bytes.IndexByte(message, '{') > -1 {
-		var res FindStakeResult
+	if bytes.IndexByte(message, '[') > -1 {
+		res := make([]FindStakeResult, 10)
 		if err := json.Unmarshal(message, &res); err != nil {
 			return nil, err
 		}
 		return res, nil
-	} else if bytes.IndexByte(message, '[') > -1 {
-		var res []FindStakeResult
+	} else if bytes.IndexByte(message, '{') > -1 {
+		var res FindStakeResult
 		if err := json.Unmarshal(message, &res); err != nil {
 			return nil, err
 		}
