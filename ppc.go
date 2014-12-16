@@ -323,7 +323,7 @@ type NextRequiredTargetResult struct {
 type FindStakeCmd struct {
 	id      interface{}
 	MaxTime int64
-	Difficulty float32
+	Difficulty float64
 	Verbose bool
 }
 
@@ -331,7 +331,7 @@ type FindStakeCmd struct {
 var _ btcjson.Cmd = &FindStakeCmd{}
 
 // NewFindStakeCmd creates a new FindStakeCmd.
-func NewFindStakeCmd(id interface{}, maxTime int64, difficulty float32, optArgs ...bool) (*FindStakeCmd, error) {
+func NewFindStakeCmd(id interface{}, maxTime int64, difficulty float64, optArgs ...bool) (*FindStakeCmd, error) {
 	// default verbose is set to true to match old behavior
 	verbose := true
 
@@ -372,12 +372,12 @@ func parseFindStakeCmd(r *btcjson.RawCmd) (btcjson.Cmd, error) {
 
 	var maxTime int64
 	if err := json.Unmarshal(r.Params[0], &maxTime); err != nil {
-		return nil, fmt.Errorf("parameter 'maxtime' must be a int64: %v", err)
+		return nil, fmt.Errorf("parameter 'maxtime' must be a integer: %v", err)
 	}
 
-	var difficulty float32
+	var difficulty float64
 	if err := json.Unmarshal(r.Params[1], &difficulty); err != nil {
-		return nil, fmt.Errorf("parameter 'difficulty' must be a float32: %v", err)
+		return nil, fmt.Errorf("parameter 'difficulty' must be a float: %v", err)
 	}
 
 	optArgs := make([]bool, 0, 2)
@@ -460,6 +460,6 @@ func (cmd *FindStakeCmd) UnmarshalJSON(b []byte) (err error) {
 // command when the verbose flag is set.  When the verbose flag is not set,
 // FindStake return a simple string.
 type FindStakeResult struct {
-	Difficulty float32 `json:"difficulty"`
+	Difficulty float64 `json:"difficulty"`
 	Time       int64   `json:"time"`
 }
