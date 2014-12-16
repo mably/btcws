@@ -323,6 +323,7 @@ type NextRequiredTargetResult struct {
 type FindStakeCmd struct {
 	id      interface{}
 	MaxTime int64
+	Difficulty float32
 	Verbose bool
 }
 
@@ -330,7 +331,7 @@ type FindStakeCmd struct {
 var _ btcjson.Cmd = &FindStakeCmd{}
 
 // NewFindStakeCmd creates a new FindStakeCmd.
-func NewFindStakeCmd(id interface{}, maxTime int64, optArgs ...bool) (*FindStakeCmd, error) {
+func NewFindStakeCmd(id interface{}, maxTime int64, difficulty float32, optArgs ...bool) (*FindStakeCmd, error) {
 	// default verbose is set to true to match old behavior
 	verbose := true
 
@@ -345,6 +346,7 @@ func NewFindStakeCmd(id interface{}, maxTime int64, optArgs ...bool) (*FindStake
 	return &FindStakeCmd{
 		id:      id,
 		MaxTime: maxTime,
+		Difficulty: difficulty,
 		Verbose: verbose,
 	}, nil
 }
@@ -364,7 +366,7 @@ func (cmd *FindStakeCmd) Method() string {
 // command with the btcjson parser.
 func parseFindStakeCmd(r *btcjson.RawCmd) (btcjson.Cmd, error) {
 
-	if len(r.Params) > 2 || len(r.Params) < 1 {
+	if len(r.Params) > 3 || len(r.Params) < 1 {
 		return nil, btcjson.ErrWrongNumberOfParams
 	}
 
@@ -373,16 +375,21 @@ func parseFindStakeCmd(r *btcjson.RawCmd) (btcjson.Cmd, error) {
 		return nil, fmt.Errorf("parameter 'maxtime' must be a int64: %v", err)
 	}
 
+	var difficulty float32
+	if err := json.Unmarshal(r.Params[1], &difficulty); err != nil {
+		return nil, fmt.Errorf("parameter 'difficulty' must be a float32: %v", err)
+	}
+
 	optArgs := make([]bool, 0, 2)
-	if len(r.Params) > 1 {
+	if len(r.Params) > 2 {
 		var verbose bool
-		if err := json.Unmarshal(r.Params[1], &verbose); err != nil {
+		if err := json.Unmarshal(r.Params[2], &verbose); err != nil {
 			return nil, fmt.Errorf("second optional parameter 'verbose' must be a bool: %v", err)
 		}
 		optArgs = append(optArgs, verbose)
 	}
 
-	newCmd, err := NewFindStakeCmd(r.Id, maxTime, optArgs...)
+	newCmd, err := NewFindStakeCmd(r.Id, maxTime, difficulty, optArgs...)
 	if err != nil {
 		return nil, err
 	}
@@ -417,8 +424,9 @@ func parseFindStakeCmdReply(message json.RawMessage) (interface{}, error) {
 
 // MarshalJSON returns the JSON encoding of cmd.  Part of the Cmd interface.
 func (cmd *FindStakeCmd) MarshalJSON() ([]byte, error) {
-	params := make([]interface{}, 1, 3)
+	params := make([]interface{}, 2, 3)
 	params[0] = cmd.MaxTime
+	params[1] = cmd.Difficulty
 	if !cmd.Verbose {
 		// set optional verbose argument to false
 		params = append(params, false)
