@@ -14,7 +14,7 @@ btcjson (using btcjson.RegisterCustomCmd).
 ```Go
 // Client Side
 import (
-	"code.google.com/p/go.net/websocket"
+	"golang.org/x/net/websocket"
 	"github.com/mably/btcws"
 )
 
@@ -36,8 +36,8 @@ websocket.JSON.Send(btcdWSConn, cmd)
 
 // Server Side
 import (
-	"code.google.com/p/go.net/websocket"
-	"github.com/conformal/btcjson"
+	"golang.org/x/net/websocket"
+	"github.com/mably/btcjson"
 	"github.com/mably/btcws"
 )
 

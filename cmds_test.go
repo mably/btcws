@@ -13,6 +13,8 @@ import (
 	"github.com/davecgh/go-spew/spew"
 )
 
+var testAccount = "account"
+
 var cmdtests = []struct {
 	name   string
 	f      func() (btcjson.Cmd, error)
@@ -28,6 +30,18 @@ var cmdtests = []struct {
 		result: &CreateEncryptedWalletCmd{
 			id:         float64(1),
 			Passphrase: "banana",
+		},
+	},
+	{
+		name: "createnewaccount",
+		f: func() (btcjson.Cmd, error) {
+			return NewCreateNewAccountCmd(
+				float64(1),
+				"account"), nil
+		},
+		result: &CreateNewAccountCmd{
+			id:      float64(1),
+			Account: "account",
 		},
 	},
 	{
@@ -62,11 +76,11 @@ var cmdtests = []struct {
 		name: "getunconfirmedbalance one optarg",
 		f: func() (btcjson.Cmd, error) {
 			return NewGetUnconfirmedBalanceCmd(float64(1),
-				"abcde")
+				testAccount)
 		},
 		result: &GetUnconfirmedBalanceCmd{
 			id:      float64(1),
-			Account: "abcde",
+			Account: testAccount,
 		},
 	},
 	{
@@ -96,11 +110,11 @@ var cmdtests = []struct {
 			return NewListAddressTransactionsCmd(
 				float64(1),
 				addrs,
-				"abcde")
+				testAccount)
 		},
 		result: &ListAddressTransactionsCmd{
 			id:      float64(1),
-			Account: "abcde",
+			Account: testAccount,
 			Addresses: []string{
 				"17XhEvq9Nahdj7Xe1nv6oRe1tEmaHUuynH",
 			},
@@ -113,7 +127,7 @@ var cmdtests = []struct {
 		},
 		result: &ListAllTransactionsCmd{
 			id:      float64(1),
-			Account: "",
+			Account: nil,
 		},
 	},
 	{
@@ -121,11 +135,11 @@ var cmdtests = []struct {
 		f: func() (btcjson.Cmd, error) {
 			return NewListAllTransactionsCmd(
 				float64(1),
-				"abcde")
+				testAccount)
 		},
 		result: &ListAllTransactionsCmd{
 			id:      float64(1),
-			Account: "abcde",
+			Account: &testAccount,
 		},
 	},
 	{
@@ -180,6 +194,20 @@ var cmdtests = []struct {
 					Index: 1,
 				},
 			},
+		},
+	},
+	{
+		name: "renameaccount",
+		f: func() (btcjson.Cmd, error) {
+			return NewRenameAccountCmd(
+				float64(1),
+				"old",
+				"new"), nil
+		},
+		result: &RenameAccountCmd{
+			id:         float64(1),
+			OldAccount: "old",
+			NewAccount: "new",
 		},
 	},
 	{
@@ -264,11 +292,11 @@ var cmdtests = []struct {
 		f: func() (btcjson.Cmd, error) {
 			return NewWalletIsLockedCmd(
 				float64(1),
-				"abcde")
+				testAccount)
 		},
 		result: &WalletIsLockedCmd{
 			id:      float64(1),
-			Account: "abcde",
+			Account: testAccount,
 		},
 	},
 }
